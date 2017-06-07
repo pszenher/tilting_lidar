@@ -1,58 +1,55 @@
 #include<ros/ros.h>
 #include<std_msgs/Float64.h>
 #include<dynamixel_msgs/JointState.h>
-
+#include <cmath>
 
 /*This code allows the motor to move back and forth to a maximum and minimum number of degrees defined in parameters.*/
 
 using namespace std;
 
-float error=1;
+float error;
 
 //obtains error from message
-void obtainValues(const dynamixel_msgs::JointState &msg)
-{
-  error = msg.error;
+void obtainValues(const dynamixel_msgs::JointState &msg) {
+    ROS_INFO_STREAM(error);
+    error = msg.error;
 }
 
 //creates all commands for each motor
-class Dynamixel
-{
-  private:
-  ros::NodeHandle nh;
-  ros::Publisher pub_n;
-  public:
-  Dynamixel();
-  void checkError();
-  void moveMotor(double position);
+class Dynamixel {
+    private:
+    ros::NodeHandle nh;
+    ros::Publisher pub_n;
+    public:
+    Dynamixel();
+    void checkError();
+    void moveMotor(double position);
 };
 
 //creates publisher
-Dynamixel::Dynamixel()
-{
-  pub_n = nh.advertise<std_msgs::Float64>("/tilt_controller/command", 10);
+Dynamixel::Dynamixel() {
+    pub_n = nh.advertise<std_msgs::Float64>("/tilt_controller/command", 10);
 }
 
 //creates message and publishes -> degree to radian to publish
- void Dynamixel::moveMotor(double position)
-{
-  double convert = (position * 3.14/180);
-  std_msgs::Float64 aux;
-  aux.data = convert;
-  pub_n.publish(aux);
-  ROS_INFO_STREAM(aux);
+void Dynamixel::moveMotor(double position) {
+    double convert = (position * 3.14/180);
+    std_msgs::Float64 aux;
+    aux.data = convert;
+    pub_n.publish(aux);
+    ROS_INFO_STREAM(aux);
 }
 
 //ensures proper alignment
-void Dynamixel::checkError()
-{
-  while(error>0.0002)
-  {
-    ros::Duration(0.01).sleep();
-//    ros::Subscriber sub=nh.subscribe("/tilt_controller/state", 5, &obtainValues); //checks error
+void Dynamixel::checkError() {
+    ros::spinOnce();
+    ROS_ERROR_STREAM(error);
+    while((abs (error))>0.02) {
+    ros::Duration(.5).sleep();
+//  ros::Subscriber sub=nh.subscribe("/tilt_controller/state", 5, &obtainValues); //checks error
     ROS_WARN_STREAM(error);
     ros::spinOnce();
-  }
+    }
 }
 
 int main(int argc, char **argv) {
@@ -78,13 +75,15 @@ int main(int argc, char **argv) {
     while(ros::ok()) {
 
         motor.moveMotor(max);
+	ros::Duration(pause).sleep();
         motor.checkError();
         ros::Duration(pause).sleep();
     
         motor.moveMotor(min);
+	ros::Duration(pause).sleep();
         motor.checkError();
         ros::Duration(pause).sleep();
   
-        ros::spinOnce();
+
     }
 }
