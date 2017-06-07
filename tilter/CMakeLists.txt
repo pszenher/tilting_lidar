@@ -106,7 +106,9 @@ catkin_package(
 )
 include_directories(include ${catkin_INCLUDE_DIRS})
 add_executable(tilter tilting.cpp)
+add_executable(tilt_transform tilt_transform.cpp)
 target_link_libraries(tilter ${catkin_LIBRARIES})
+target_link_libraries(tilt_transform ${catkin_LIBRARIES})
 ###########
 ## Build ##
 ###########

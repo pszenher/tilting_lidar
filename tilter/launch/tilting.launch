@@ -35,12 +35,14 @@
     output="screen"
    />
 
+<!--
   <node
     name="commander"
     pkg="motors_base"
     type="commander"
     output="screen"
    />
+-->
 
   <node
     name="tilter"    
@@ -48,6 +50,13 @@
     type="tilter"
     output="screen"
    />
+
+  <node
+    name="tilt_transform"
+    pkg="tilter"
+    type="tilt_transform"
+    output="screen"
+  />
 
  <node
     pkg="hokuyo_node"
