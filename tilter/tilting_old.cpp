@@ -2,9 +2,8 @@
 #include<std_msgs/Float64.h>
 #include<tf/transform_broadcaster.h>
 
-/*This code allows the motor to move a certain interval, specified in degrees, and then pause.  A maximum and minimum angle can be specified, as well as the starting point.  The pause and interval ammount can be changed as well.
+/*Original tilting source code*/
 
-In this version, the motor first goes to the starting position, then the maximum angle, and finally the minumum angle.  The motor than oscillates between the maximum and minimum angles. */
 
 using namespace std;
 
