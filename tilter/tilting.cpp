@@ -45,7 +45,7 @@ void Dynamixel::checkError() {
     ros::spinOnce();
     ROS_ERROR_STREAM(error);
     while((abs (error))>0.02) {
-    ros::Duration(.5).sleep();
+    ros::Duration(.1).sleep();
 //  ros::Subscriber sub=nh.subscribe("/tilt_controller/state", 5, &obtainValues); //checks error
     ROS_WARN_STREAM(error);
     ros::spinOnce();
@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
     //intitialize parameters
     nh.param("maximum", max, 90);
     nh.param("minimum", min, -90);
-    nh.param("pause", pause, 0.5);
+    nh.param("pause", pause, 0.1);
 
     while(ros::ok()) {
 
