@@ -68,8 +68,8 @@ int main(int argc, char **argv) {
     ros::Subscriber sub=nh.subscribe("/tilt_controller/state", 5, &obtainValues); //checks error
 
     //intitialize parameters
-    nh.param("maximum", max, 45);
-    nh.param("minimum", min, -45);
+    nh.param("maximum", max, 90);
+    nh.param("minimum", min, -90);
     nh.param("pause", pause, 0.5);
 
     while(ros::ok()) {
